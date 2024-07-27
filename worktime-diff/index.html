@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zeitdifferenz Berechnung</title>
+</head>
+<body>
+    <h1>Zeitdifferenz Berechnung</h1>
+    <label for="startTime">Startzeit (HH:MM): </label>
+    <input type="time" id="startTime">
+    <br><br>
+    <label for="endTime">Endzeit (HH:MM): </label>
+    <input type="time" id="endTime">
+    <br><br>
+    <button onclick="calculateTimeDifference()">Berechne Zeitdifferenz</button>
+    <p id="result"></p>
+
+    <script>
+        function calculateTimeDifference() {
+            // Eingaben erhalten
+            const startTimeInput = document.getElementById('startTime').value;
+            const endTimeInput = document.getElementById('endTime').value;
+
+            // Eingaben in Date-Objekte umwandeln
+            const startTime = new Date(`1970-01-01T${startTimeInput}:00`);
+            const endTime = new Date(`1970-01-01T${endTimeInput}:00`);
+
+            // Differenz in Millisekunden berechnen
+            let differenceInMs = endTime - startTime;
+
+            // Wenn die Endzeit vor der Startzeit liegt, addiere einen Tag (24 Stunden) zur Endzeit
+            if (differenceInMs < 0) {
+                differenceInMs += 24 * 60 * 60 * 1000;
+            }
+
+            // Differenz in Minuten umwandeln
+            const differenceInMinutes = Math.floor(differenceInMs / (1000 * 60));
+
+            // Stunden und Minuten berechnen
+            let hours = Math.floor(differenceInMinutes / 60);
+            let minutes = differenceInMinutes % 60;
+
+            // Anpassung der Arbeitszeit
+            let adjustedTime = adjustWorkTime({ hours, minutes });
+
+            // Ergebnis ausgeben
+            const resultElement = document.getElementById('result');
+            resultElement.textContent = `Differenz: ${adjustedTime.hours} Stunden und ${adjustedTime.minutes} Minuten`;
+        }
+
+        // Funktion zur Anpassung der Arbeitszeit
+        function adjustWorkTime(timeDifference) {
+            const MAX_HOURS_1 = 2;
+            const MAX_MINUTES_1 = 30;
+            const MAX_TOTAL_MINUTES_1 = MAX_HOURS_1 * 60 + MAX_MINUTES_1;
+            const ADJUSTMENT_1 = 15;
+
+            const MAX_HOURS_2 = 4;
+            const MAX_MINUTES_2 = 45;
+            const MAX_TOTAL_MINUTES_2 = MAX_HOURS_2 * 60 + MAX_MINUTES_2;
+            const ADJUSTMENT_2 = 45;
+
+            let totalMinutes = timeDifference.hours * 60 + timeDifference.minutes;
+
+            if (totalMinutes > MAX_TOTAL_MINUTES_2 + ADJUSTMENT_2) {
+                totalMinutes -= ADJUSTMENT_2;
+            } else if (totalMinutes > MAX_TOTAL_MINUTES_2) {
+                totalMinutes = MAX_TOTAL_MINUTES_2;
+            } else if (totalMinutes > MAX_TOTAL_MINUTES_1 + ADJUSTMENT_1) {
+                totalMinutes -= ADJUSTMENT_1;
+            } else if (totalMinutes > MAX_TOTAL_MINUTES_1) {
+                totalMinutes = MAX_TOTAL_MINUTES_1;
+            }
+
+            let adjustedHours = Math.floor(totalMinutes / 60);
+            let adjustedMinutes = totalMinutes % 60;
+
+            return { hours: adjustedHours, minutes: adjustedMinutes };
+        }
+    </script>
+</body>
+</html>

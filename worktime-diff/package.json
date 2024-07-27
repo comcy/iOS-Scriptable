@@ -1,0 +1,16 @@
+{
+  "name": "worktime-diff",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "mocha"
+  },
+  "author": "comcy",
+  "license": "MIT",
+  "description": "",
+  "dependencies": {
+    "chai": "^5.1.1",
+    "mocha": "^10.7.0"
+  }
+}
