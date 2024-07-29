@@ -54,6 +54,7 @@ function calculateTimeDifference(startTime, endTime) {
     return result;
 }
 
+
 // MAIN
 async function main() {
     let startTime = await promptForTime("Enter the start time (HH:MM):");
