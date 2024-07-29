@@ -16,6 +16,8 @@
     <button onclick="calculateTimeDifference()">Berechne Zeitdifferenz</button>
     <p id="result"></p>
 
+<!--     <script src="js/script.js"></script> -->
+
     <script>
         function calculateTimeDifference() {
             // Eingaben erhalten
@@ -52,12 +54,12 @@
         // Funktion zur Anpassung der Arbeitszeit
         function adjustWorkTime(timeDifference) {
             const MAX_HOURS_1 = 2;
-            const MAX_MINUTES_1 = 30;
+            const MAX_MINUTES_1 = 0
             const MAX_TOTAL_MINUTES_1 = MAX_HOURS_1 * 60 + MAX_MINUTES_1;
             const ADJUSTMENT_1 = 15;
 
-            const MAX_HOURS_2 = 4;
-            const MAX_MINUTES_2 = 45;
+            const MAX_HOURS_2 = 5;
+            const MAX_MINUTES_2 = 30;
             const MAX_TOTAL_MINUTES_2 = MAX_HOURS_2 * 60 + MAX_MINUTES_2;
             const ADJUSTMENT_2 = 45;
 

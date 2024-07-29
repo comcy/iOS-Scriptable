@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zeitdifferenz Berechnung</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        label, input {
+            display: block;
+            margin: 10px 0;
+        }
+        button {
+            margin-top: 20px;
+        }
+        #result {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        #warning {
+            margin-top: 20px;
+            font-weight: bold;
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1>Zeitdifferenz Berechnung</h1>
+    <form id="timeForm">
+        <label for="startTime">Startzeit (HH:MM):</label>
+        <input type="time" id="startTime" required>
+        
+        <label for="endTime">Endzeit (HH:MM):</label>
+        <input type="time" id="endTime" required>
+        
+        <button type="button" onclick="calculateAndDisplay()">Berechnen</button>
+    </form>
+    <div id="result"></div>
+    <div id="warning"></div>
+
+    <script>
+        function calculateTimeDifference(startTime, endTime) {
+
+            // let result: { res: '', warn: ''};
+
+            const start = new Date(`1970-01-01T${startTime}:00`);
+            const end = new Date(`1970-01-01T${endTime}:00`);
+
+            if (isNaN(start) || isNaN(end)) {
+                return "Ungültiges Zeitformat. Bitte verwenden Sie HH:MM.";
+            }
+
+            let diff = end - start;
+            let diffMinutes = diff / 1000 / 60;
+
+            let hours = Math.floor(diffMinutes / 60);
+            let minutes = diffMinutes % 60;
+
+            if (hours > 2 || (hours === 2 && minutes > 0)) {
+                let excessMinutes = (hours - 2) * 60 + minutes;
+                let minutesToSubtract = Math.min(excessMinutes, 15);
+                diffMinutes -= minutesToSubtract;
+            }
+
+            hours = Math.floor(diffMinutes / 60);
+            minutes = diffMinutes % 60;
+
+            if (hours > 5 || (hours === 5 && minutes > 30)) {
+                let excessMinutes = (hours - 5) * 60 + minutes - 30;
+                let minutesToSubtract = Math.min(excessMinutes, 45);
+                diffMinutes -= minutesToSubtract;
+            }
+
+            hours = Math.floor(diffMinutes / 60);
+            minutes = diffMinutes % 60;
+
+            let result= `Zeitdifferenz: ${hours} Stunden und ${minutes} Minuten`;
+
+            let warning = '';
+
+            if (hours > 10 || (hours === 10 && minutes > 0)) {
+                warning += `Warnung: Die Gesamtzeit überschreitet 10 Stunden!`;
+            }
+
+            console.log('>>> res', result);
+            console.log('>>> warn', warning);
+
+            return { res: result, warn: warning };
+        }
+
+        function calculateAndDisplay() {
+            const startTime = document.getElementById("startTime").value;
+            const endTime = document.getElementById("endTime").value;
+            const result = calculateTimeDifference(startTime, endTime);
+
+            document.getElementById("result").innerText = result.res;
+            document.getElementById("warning").innerText = result.warn;
+        }
+    </script>
+</body>
+</html>
+
